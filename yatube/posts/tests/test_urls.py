@@ -12,7 +12,7 @@ class TaskURLTests(TestCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.post = Post.objects.create(
-            author = User.objects.create_user(username='auth',
+            author=User.objects.create_user(username='auth',
                                             email='test@gmail.com',
                                             password='password',),
             text='Тестовая пост',
@@ -35,7 +35,7 @@ class TaskURLTests(TestCase):
         """Страница / доступна любому пользователю."""
         response = self.guest_client.get('/')
         self.assertEqual(response.status_code, HTTPStatus.OK)
-    
+
     def test_group_url_exists_at_desired_location(self):
         """Страница /group/test_slug/ доступна любому пользователю."""
         response = self.guest_client.get('/group/test_slug/')

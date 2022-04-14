@@ -4,7 +4,6 @@ from django.test import Client, TestCase
 from django.urls import reverse
 from posts.models import Group, Post, User
 from ..forms import PostForm
-from http import HTTPStatus
 User = get_user_model()
 ITEMS_PER_PAGE = 10
 ITEMS_PER_PAGE_3 = 3
@@ -39,7 +38,6 @@ class PostPagesTests(TestCase):
             text='заголовок',
             pub_date='22.10.2022',
         )
-
 
     def setUp(self):
         self.guest_client = Client()
@@ -82,8 +80,7 @@ class PostPagesTests(TestCase):
         for reverse_name, response_name in context_objects.items():
             with self.subTest(reverse_name=reverse_name):
                 self.assertEqual(response_name, reverse_name)
-        
-    # Проверка словаря контекста страницы группы
+
     def test_post_posts_groups_page_show_correct_context(self):
         """Проверяем Context страницы group_posts"""
         response = self.authorized_client.get(
@@ -124,7 +121,7 @@ class PostPagesTests(TestCase):
         for reverse_name, response_name in context_objects.items():
             with self.subTest(reverse_name=reverse_name):
                 self.assertEqual(response_name, reverse_name)
-    
+
     def test_post_edit_show_correct_context(self):
         """Шаблон post_edit сформирован с правильным контекстом."""
         response = self.authorized_client.get(
