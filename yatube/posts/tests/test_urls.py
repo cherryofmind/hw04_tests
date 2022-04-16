@@ -24,27 +24,20 @@ class TaskURLTests(TestCase):
         )
 
     def setUp(self):
-        # Создаем неавторизованный клиент
         self.guest_client = Client()
-        # Создаем авторизованый клиент
         self.user = User.objects.create_user(username='HasNoName')
         self.authorized_client = Client()
         self.authorized_client.force_login(self.user)
 
-    def test_home_url_exists_at_desired_location(self):
-        """Страница / доступна любому пользователю."""
-        response = self.guest_client.get('/')
-        self.assertEqual(response.status_code, HTTPStatus.OK)
-
-    def test_group_url_exists_at_desired_location(self):
-        """Страница /group/test_slug/ доступна любому пользователю."""
-        response = self.guest_client.get('/group/test_slug/')
-        self.assertEqual(response.status_code, HTTPStatus.OK)
-
-    def test_create_url_exists_at_desired_location(self):
-        """Страница /create/' доступна авторизованному пользователю."""
-        response = self.authorized_client.get('/create/')
-        self.assertEqual(response.status_code, HTTPStatus.OK)
+    def test_urls_list(self):
+        """
+        Тестирование по списку, для анонимного пользователя,
+        список URL, где ответ должен быть равен 200
+        """
+        url_list = ['/', '/group/test_slug/']
+        for test_url in url_list:
+            response = self.guest_client.get(test_url)
+            self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def test_private_url(self):
         """без авторизации приватные URL недоступны"""
@@ -64,12 +57,23 @@ class TaskURLTests(TestCase):
             response, '/auth/login/?next=/create/'
         )
 
+    def test_new_page_login_user(self):
+        """
+        Тестирование по списку, для авторизированного пользователя,
+        список URL, где ответ должен быть равен 200
+        """
+        url_list = ['/', '/group/test_slug/', '/create/']
+        for test_url in url_list:
+            response = self.authorized_client.get(test_url)
+            self.assertEqual(response.status_code, HTTPStatus.OK)
+
     def test_urls_uses_correct_template(self):
         """URL-адрес использует соответствующий шаблон."""
         templates_url_names = {
             '/': 'posts/index.html',
             '/group/test_slug/': 'posts/group_list.html',
             '/create/': 'posts/post_create.html',
+            '/profile/auth/': 'posts/profile.html',
         }
         for address, template in templates_url_names.items():
             with self.subTest(address=address):

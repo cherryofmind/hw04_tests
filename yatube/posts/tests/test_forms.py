@@ -47,3 +47,36 @@ class PostCreateFormTests(TestCase):
             posts_count,
             'Не удалось создать новый пост'
         )
+
+    def test_post_edit(self):
+        """При отправке формы происходит изменение поста с post_id в базе данных.
+        """
+        form_data = {
+            'text': 'Пост который отредактировали',
+            'group': self.group.pk,
+        }
+
+        self.new_user_client.post(
+            reverse(
+                'posts:post_edit',
+                kwargs={'post_id': self.post.pk}
+            ),
+            data=form_data,
+            follow=True
+        )
+
+        self.assertEqual(
+            Post.objects.get(
+                pk=self.post.pk
+            ).text,
+            'Пост который отредактировали',
+            'Ожидаемый текст не подходит'
+        )
+
+        self.assertEqual(
+            Post.objects.get(
+                pk=self.post.pk
+            ).group,
+            self.group,
+            'Ожидаемая группа не подходит'
+        )
