@@ -51,7 +51,6 @@ class PostModelTest(TestCase):
         expected_object_name = task.title
         self.assertEquals(expected_object_name, str(task))
 
-
     def test_models_have_correct_object_names(self):
         """Проверяем, что у моделей корректно работает __str__."""
         post = self.post
