@@ -75,8 +75,11 @@ def post_create(request):
     return render(request, 'posts/post_create.html', {'form': form})
 
 
+# FIXME: параметр username тут не нужен, сюда приходят параметры,
+#  которые ты обозначил в urls.py
+# def post_edit(request, username, post_id):
 @login_required
-def post_edit(request, username, post_id):
+def post_edit(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     is_edit = True
     form = PostForm(request.POST or None, files=request.FILES or None,

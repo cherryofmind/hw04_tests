@@ -38,7 +38,9 @@
       <p>
         {{ post.text }}
       </p>
-      <a class="btn btn-primary" href="{% url 'posts:post_edit' post_id %}">
+{#      FIXME: ты тут передавал несуществующий параметр post_id/
+В шаблоне можно использовать лишь то, что передаешь из вью в контексте#}
+      <a class="btn btn-primary" href="{% url 'posts:post_edit' post.pk %}">
         редактировать пост
       </a> 
     </article>
