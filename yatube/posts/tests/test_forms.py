@@ -4,7 +4,9 @@ from django.urls import reverse
 
 from ..forms import PostForm
 from ..models import Group, Post
-
+import shutil
+import tempfile
+from django.conf import settings
 
 User = get_user_model()
 
@@ -29,6 +31,11 @@ class PostCreateFormTests(TestCase):
         )
         # Создаем форму, если нужна проверка атрибутов
         cls.form = PostForm()
+
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(settings.MEDIA_ROOT, ignore_errors=True)
+        super().tearDownClass()
 
     def test_form_create_post(self):
         """Валидная форма создает запись в Post."""

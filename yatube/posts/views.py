@@ -76,7 +76,22 @@ def post_create(request):
 
 
 @login_required
-def post_edit(request, post_id):
+def post_edit(request, username, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    is_edit = True
+    form = PostForm(request.POST or None, files=request.FILES or None,
+                    instance=post)
+
+    if post.author != request.user:
+        return redirect('posts:post_detail', post_id)
+    if form.is_valid():
+        form.save()
+        return redirect('posts:post_detail', post_id)
+    return render(request, 'posts/post_create.html', {'form': form,
+                  'is_edit': is_edit})
+
+
+""" def post_edit(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     is_edit = True
     if post.author != request.user:
@@ -90,4 +105,4 @@ def post_edit(request, post_id):
             return redirect('posts:post_detail', post_id)
     form = PostForm(instance=post)
     return render(request, 'posts/post_create.html', {'form': form,
-                  'is_edit': is_edit})
+                  'is_edit': is_edit}) """

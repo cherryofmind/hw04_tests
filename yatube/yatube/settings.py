@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'posts.apps.PostsConfig',
     'users.apps.UsersConfig',
     'core.apps.CoreConfig',
+    'sorl.thumbnail',
 ]
 
 MIDDLEWARE = [
@@ -138,3 +139,5 @@ LOGIN_REDIRECT_URL = 'posts:main'
 # LOGOUT_REDIRECT_URL = 'users:logout'
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
