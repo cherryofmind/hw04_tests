@@ -64,20 +64,15 @@ def post_detail(request, post_id):
 
 @login_required
 def post_create(request):
-    if request.method == 'POST':
-        form = PostForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            form.save()
-            return redirect('posts:profile', request.user)
-    form = PostForm()
+    form = PostForm(request.POST or None,
+                    files=request.FILES or None)
+    if form.is_valid():
+        post = form.save(commit=False)
+        post.author = request.user
+        post.save()
+        return redirect('posts:profile', str(request.user))
     return render(request, 'posts/post_create.html', {'form': form})
 
-
-# FIXME: параметр username тут не нужен, сюда приходят параметры,
-#  которые ты обозначил в urls.py
-# def post_edit(request, username, post_id):
 @login_required
 def post_edit(request, post_id):
     post = get_object_or_404(Post, id=post_id)

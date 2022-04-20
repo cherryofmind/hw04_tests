@@ -150,9 +150,6 @@ dmypy.json
 .vscode/
 /.vscode
 
-# FIXME: это самая болезненная строчка. Миграции обязательно должны быть в репо.
-# yatube/posts/migrations/
-
 
 # Unit test / coverage reports
 htmlcov/
